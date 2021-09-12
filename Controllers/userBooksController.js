@@ -2,8 +2,7 @@ const { Router } = require("express")
 const Express = require("express")
 const router = Express.Router()
 let validateJWT = require("../middleware/validate-jwt")
-const { UserBooksModel } = require("../models")
-
+const { UserBooks } = require("../models")
 
 
 router.post("/create", validateJWT, async (req, res) => {
@@ -19,16 +18,16 @@ router.post("/create", validateJWT, async (req, res) => {
         owner: id
     }
     try {
-        const newBook = await UserBooksModel.create(bookEntry)
+        const newBook = await UserBooks.create(bookEntry)
         res.status(200).json(newBook)
     } catch (err) {
-        res.status(500).json({ error: err })
+        res.status(500).json({ error: err})
     }
 })
 
 router.get("/", async (req, res)=> {
     try {
-        const allBooks = await UserBooksModel.findAll()
+        const allBooks = await UserBooks.findAll()
         res.status(200).json(allBooks)
     } catch (err) {
         res.status(500).json({ error: err })
@@ -41,7 +40,7 @@ router.get("/mybooks", validateJWT, async (req, res)=> {
         id
     } = req.user
     try {
-        const userBooks = await UserBooksModel.findAll({
+        const userBooks = await UserBooks.findAll({
             where: {
                 owner: id
             }
@@ -55,7 +54,7 @@ router.get("/mybooks", validateJWT, async (req, res)=> {
 
 router.get("/:genre", async (req, res)=> { const { genre } = req.params
     try {
-        const genreResults = await UserBooksModel.findAll({
+        const genreResults = await UserBooks.findAll({
             where: {
                 genre: genre
             }
@@ -89,7 +88,7 @@ router.put("/update/:bookId", validateJWT, async (req, res) => {
         sharedDate: sharedDate
     }
 
-        const update = await UserBooksModel.update(updatedBook, query)
+        const update = await UserBooks.update(updatedBook, query)
         res.status(200).json(update)
     
 })
@@ -107,7 +106,7 @@ router.delete("/delete/:bookId", validateJWT, async (req, res) => {
             }
         }
 console.log("test");
-        await UserBooksModel.destroy(query)
+        await UserBooks.destroy(query)
         res.status(200).json({ message: "Book Removed" })
     } catch (err) {
         res.status(500).json({ error: err })
