@@ -6,7 +6,7 @@ const port = 3000
 
     ;(async () => {
 
-        sequelize.sync()
+        // sequelize.sync()
         app.use(require("./middleware/headers"))
         app.use(express.json())
 
@@ -16,8 +16,8 @@ const port = 3000
         const user = require("./Controllers/userController")
         app.use("/user", user)
 
-        // const book = require("./Controllers/userBooksController")
-        // app.use("/book", book)
+        const book = require("./Controllers/userBooksController")
+        app.use("/book", book)
 
         // const profile = require('./Controllers/userProfileController')
         // app.use('/profile', profile)

@@ -1,7 +1,7 @@
 require('dotenv').config()
 const jwt = require("jsonwebtoken")
-// const { UserModel } = require("../models/User")
-let User = sequelize.import('../models/User')
+const { sequelize } = require('../db');
+const  { User } = require('../Models')
 
 const validateJWT = async (req, res, next) => {
     if (req.method == "OPTIONS") {
@@ -24,7 +24,7 @@ const validateJWT = async (req, res, next) => {
             console.log("payload-->", payload)
 
         if (payload) {
-            let foundUser = await UserModel.findOne({ where: { id: payload.id } })
+            let foundUser = await User.findOne({ where: { id: payload.id } })
             console.log("foundUser -->",foundUser)
 
             if (foundUser) {
