@@ -1,4 +1,5 @@
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require('sequelize');
+// const { options } = require('./middleware/validate-jwt');
 
 const sequelize = new Sequelize(
     process.env.DB_DBNAME,
@@ -10,6 +11,22 @@ const sequelize = new Sequelize(
     });
 
 
-    modules.export = {
-        sequelize
+async function syncDb(sequelize, options){
+    const { force, alter } = options
+    try {
+        if (force)
+            await sequelize.sync({ force: true })
+        else if (alter)
+            await sequelize.sync({ alter: true })
+        else
+            await sequelize.sync()
+    } catch (err) {
+        console.log(err);
     }
+}
+
+
+module.exports = {
+    sequelize,
+    syncDb
+}

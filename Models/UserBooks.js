@@ -1,36 +1,30 @@
-const { Sequelize, DataTypes } = require('sequelize')
-
-const sequelize = new Sequelize(
-    process.env.DB_DBNAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-        host: process.env.DB_HOST,
-        dialect: 'postgres'
-    });
-
+module.exports = (sequelize, DataTypes) => {
 
 const UserBooks = sequelize.define("UserBooks", {
     title: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
     },
     author: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
     },
     genre: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: true
     },
     cover: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: true
     },
     sharedWith: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: true
     },
     sharedDate: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: true
     }
 })
-
-module.exports = {
-    UserBooks
+return UserBooks
 }
