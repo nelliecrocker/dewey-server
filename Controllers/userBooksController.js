@@ -3,11 +3,13 @@ const Express = require("express")
 const router = Express.Router()
 let validateJWT = require("../middleware/validate-jwt")
 const { UserBooks } = require("../models")
+const { User } = require("../models")
 
 
 router.post("/create", validateJWT, async (req, res) => {
     const { title, author, genre, cover, sharedWith, sharedDate } = req.body.book
     const { id } = req.user
+    // console.log(id);
     const bookEntry = {
         title,
         author,
@@ -15,11 +17,16 @@ router.post("/create", validateJWT, async (req, res) => {
         cover,
         sharedWith,
         sharedDate,
-        owner: id
+        // owner: id
     }
     try {
-        const newBook = await UserBooks.create(bookEntry)
-        res.status(200).json(newBook)
+        let user = await User.findOne({ where: { id: req.user.id }})
+        // console.log("****************");
+        if (user) {
+            const newBook = await UserBooks.create(bookEntry)
+            await newBook.setUser(user)
+            res.status(200).json(newBook)
+        } else throw "unable to find a user"
     } catch (err) {
         res.status(500).json({ error: err})
     }
