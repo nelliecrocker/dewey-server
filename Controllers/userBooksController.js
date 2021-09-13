@@ -18,21 +18,21 @@ router.post("/create", validateJWT, async (req, res) => {
         sharedDate,
     }
     try {
-        let user = await User.findOne({ where: { id: req.user.id }})
+        let user = await User.findOne({ where: { id: req.user.id } })
         if (user) {
             const newBook = await UserBooks.create(bookEntry)
             await newBook.setUser(user)
             res.status(200).json(newBook)
         } else throw "unable to find a user"
     } catch (err) {
-        res.status(500).json({ error: err})
+        res.status(500).json({ error: err })
     }
 })
 
-router.get("/allbooks", async (req, res)=> {
+router.get("/allbooks", async (req, res) => {
     try {
         const allBooks = await UserBooks.findAll()
-        if (allBooks){
+        if (allBooks) {
             res.status(200).json(allBooks)
         } else throw "unable to find any books"
     } catch (err) {
@@ -41,7 +41,7 @@ router.get("/allbooks", async (req, res)=> {
 })
 
 
-router.get("/mybooks", validateJWT, async (req, res)=> {
+router.get("/mybooks", validateJWT, async (req, res) => {
     const { id } = req.user
     try {
         const userBooks = await UserBooks.findAll({
@@ -49,7 +49,7 @@ router.get("/mybooks", validateJWT, async (req, res)=> {
                 UserId: id
             }
         })
-        if (userBooks){
+        if (userBooks) {
             res.status(200).json(userBooks)
         } else throw "unable to find your books"
     } catch (err) {
@@ -58,50 +58,59 @@ router.get("/mybooks", validateJWT, async (req, res)=> {
 })
 
 
-router.get("/:genre", async (req, res)=> { const { genre } = req.params
-try {
-    const genreResults = await UserBooks.findAll({
-        where: {
-            genre: genre
-        }
-    })
-    if (genreResults) {
-        res.status(200).json(genreResults)
-    } else throw "unable to find any books with that genre"
-} catch (err) {
-    res.status(500).json({ error: err })
-}
+router.get("/:genre", async (req, res) => {
+    const { genre } = req.params
+    try {
+        const genreResults = await UserBooks.findAll({
+            where: {
+                genre: genre
+            }
+        })
+        if (genreResults) {
+            res.status(200).json(genreResults)
+        } else throw "unable to find any books with that genre"
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
 })
 
 
-// console.log("****************");
 
 router.put("/update/:bookId", validateJWT, async (req, res) => {
-    const { title, author, genre, cover, sharedWith, sharedDate } = req.body
+
+    const { title, author, genre, cover, sharedWith, sharedDate } = req.body.book
+
     const bookId = req.params.bookId
     const userId = req.user.id
-
-    console.log({ title, author, genre, cover, sharedWith, sharedDate, bookId, userId });
-    const query = {
-        where: {
-            id: bookId,
-            owner: userId
+    try {
+        const query = {
+            where: {
+                id: bookId,
+                UserId: userId
+            },
+            returning: true
         }
-    }
 
-    const updatedBook = {
-        title: title,
-        author: author,
-        genre: genre,
-        cover: cover,
-        sharedWith: sharedWith,
-        sharedDate: sharedDate
-    }
+        const updatedBook = {
+            title: title,
+            author: author,
+            genre: genre,
+            cover: cover,
+            sharedWith: sharedWith,
+            sharedDate: sharedDate
+        }
 
         const update = await UserBooks.update(updatedBook, query)
-        res.status(200).json(update)
-    
+        console.log("****************");
+        console.log(update);
+        if (update) {
+            res.status(200).json(update) //update returns [0], updatedBook returns {}, both return a console log of undefined items
+        } else throw "unable to update this book"
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
 })
+
 
 
 router.delete("/delete/:bookId", validateJWT, async (req, res) => {
@@ -115,7 +124,7 @@ router.delete("/delete/:bookId", validateJWT, async (req, res) => {
                 owner: ownerId
             }
         }
-console.log("test");
+        console.log("test");
         await UserBooks.destroy(query)
         res.status(200).json({ message: "Book Removed" })
     } catch (err) {
