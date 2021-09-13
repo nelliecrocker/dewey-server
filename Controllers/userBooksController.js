@@ -56,22 +56,25 @@ router.get("/mybooks", validateJWT, async (req, res)=> {
         res.status(500).json({ error: err })
     }
 })
-// console.log("****************");
 
 
 router.get("/:genre", async (req, res)=> { const { genre } = req.params
-    try {
-        const genreResults = await UserBooks.findAll({
-            where: {
-                genre: genre
-            }
-        })
+try {
+    const genreResults = await UserBooks.findAll({
+        where: {
+            genre: genre
+        }
+    })
+    if (genreResults) {
         res.status(200).json(genreResults)
-    } catch (err) {
-        res.status(500).json({ error: err })
-    }
+    } else throw "unable to find any books with that genre"
+} catch (err) {
+    res.status(500).json({ error: err })
+}
 })
 
+
+// console.log("****************");
 
 router.put("/update/:bookId", validateJWT, async (req, res) => {
     const { title, author, genre, cover, sharedWith, sharedDate } = req.body
