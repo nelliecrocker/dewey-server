@@ -101,10 +101,9 @@ router.put("/update/:bookId", validateJWT, async (req, res) => {
         }
 
         const update = await UserBooks.update(updatedBook, query)
-        console.log("****************");
-        console.log(update);
+
         if (update) {
-            res.status(200).json(update) //update returns [0], updatedBook returns {}, both return a console log of undefined items
+            res.status(200).json(update) 
         } else throw "unable to update this book"
     } catch (err) {
         res.status(500).json({ error: err })
@@ -114,17 +113,16 @@ router.put("/update/:bookId", validateJWT, async (req, res) => {
 
 
 router.delete("/delete/:bookId", validateJWT, async (req, res) => {
-    const ownerId = req.user.id
     const bookId = req.params.bookId
+    const userId = req.user.id
 
     try {
         const query = {
             where: {
                 id: bookId,
-                owner: ownerId
+                UserId: userId
             }
         }
-        console.log("test");
         await UserBooks.destroy(query)
         res.status(200).json({ message: "Book Removed" })
     } catch (err) {
