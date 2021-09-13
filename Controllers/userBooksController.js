@@ -9,7 +9,6 @@ const { User } = require("../models")
 router.post("/create", validateJWT, async (req, res) => {
     const { title, author, genre, cover, sharedWith, sharedDate } = req.body.book
     const { id } = req.user
-    // console.log(id);
     const bookEntry = {
         title,
         author,
@@ -17,7 +16,6 @@ router.post("/create", validateJWT, async (req, res) => {
         cover,
         sharedWith,
         sharedDate,
-        // owner: id
     }
     try {
         let user = await User.findOne({ where: { id: req.user.id }})
@@ -36,29 +34,29 @@ router.get("/allbooks", async (req, res)=> {
         const allBooks = await UserBooks.findAll()
         if (allBooks){
             res.status(200).json(allBooks)
-        } else throw "unable to find your books"
+        } else throw "unable to find any books"
     } catch (err) {
         res.status(500).json({ error: err })
     }
 })
 
-// console.log("****************");
 
-// router.get("/my", validateJWT, async (req, res)=> {
-//     const {
-//         id
-//     } = req.user
-//     try {
-//         const userBooks = await UserBooks.findAll({
-//             where: {
-//                 owner: id
-//             }
-//         })
-//         res.status(200).json(userBooks)
-//     } catch (err) {
-//         res.status(500).json({ error: err })
-//     }
-// })
+router.get("/mybooks", validateJWT, async (req, res)=> {
+    const { id } = req.user
+    try {
+        const userBooks = await UserBooks.findAll({
+            where: {
+                UserId: id
+            }
+        })
+        if (userBooks){
+            res.status(200).json(userBooks)
+        } else throw "unable to find your books"
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
+})
+// console.log("****************");
 
 
 router.get("/:genre", async (req, res)=> { const { genre } = req.params
