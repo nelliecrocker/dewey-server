@@ -19,8 +19,8 @@ const port = 3000
         const book = require("./Controllers/userBooksController")
         app.use("/book", book)
 
-        // const profile = require('./Controllers/userProfileController')
-        // app.use('/profile', profile)
+        const profile = require('./Controllers/userProfileController')
+        app.use('/profile', profile)
 
         app.listen(port, () => {
             console.log(`Dewey server listening at http://localhost:${port}`)

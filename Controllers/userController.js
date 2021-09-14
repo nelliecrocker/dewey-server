@@ -5,6 +5,8 @@ const { User } = require('../models')
 const { UniqueConstraintError } = require("sequelize/lib/errors")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcryptjs')
+let validateJWT = require("../middleware/validate-jwt")
+
 
 router.post("/register", async (req, res) => {
 
@@ -79,4 +81,29 @@ router.post("/login", async (req, res) => {
     }
 })
 
-module.exports = router
+
+router.delete("/delete/:userId", validateJWT, async (req, res) => {
+    const userId = req.user.id
+    const user = await User.create({ id: userId })
+    console.log(user.name);
+    await user.destroy()
+})
+
+
+
+
+    //     try {
+    //         const query = {
+    //             where: {
+    //                 id: userId
+    //             }
+    //         }
+    //         console.log("************");
+    //         await User.destroy(query)
+    //         res.status(200).json({ message: "User Removed" })
+    //     } catch (err) {
+    //         res.status(500).json({ error: err })
+    //     }
+    // })
+
+    module.exports = router
