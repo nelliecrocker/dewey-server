@@ -2,6 +2,7 @@ const { Router } = require("express")
 const Express = require("express")
 const router = Express.Router()
 let validateJWT = require("../middleware/validate-jwt")
+// let { authUser, authRole } = require("../middleware/isAdmin")
 const { UserProfile } = require("../models")
 const { User } = require("../models")
 
@@ -26,7 +27,6 @@ router.post("/create", validateJWT, async (req, res) => {
     }
 })
 
-// console.log("********************")
 router.get("/allprofiles", async (req, res) => {
     try {
         const allProfiles = await UserProfile.findAll()

@@ -25,8 +25,17 @@ async function syncDb(sequelize, options){
     }
 }
 
+//error handling for admin/role
+function errorHandler(err, req, res, next) {
+    if (typeof (err) === 'string') {
+        return res.status(400).json({message:'Invalid token'})
+    }
+    return res.status(500).json({message: err.message})
+}
+
 
 module.exports = {
     sequelize,
-    syncDb
+    syncDb,
+    errorHandler
 }

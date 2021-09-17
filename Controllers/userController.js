@@ -34,7 +34,8 @@ router.post("/register", async (req, res) => {
             })
         } else {
             res.status(500).json({
-                message: "Failed to register user"
+                message: "Failed to register user",
+                error: err
             })
         }
     }
@@ -71,7 +72,7 @@ router.post("/login", async (req, res) => {
 
         } else {
             res.status(401).json({
-                message: "Incorrect email or password"
+                message: "No account available"
             })
         }
     } catch (error) {
@@ -82,14 +83,36 @@ router.post("/login", async (req, res) => {
 })
 
 
+// router.delete("/delete/:userId", validateJWT, async (req, res) => {
+//     const userId = req.user.id
+//     const user = await User.create({ id: userId })
+//     console.log(user.name);
+//     await user.destroy()
+// })
+
 router.delete("/delete/:userId", validateJWT, async (req, res) => {
     const userId = req.user.id
-    const user = await User.create({ id: userId })
-    console.log(user.name);
-    await user.destroy()
+
+//According to Amit, use this as a check to see if Admin is true or false; store as state
+    // if(req.user.isAdmin == "true") {
+    //     res.status(200)
+    //     return res.send('Welcome Admin')
+    // } else {
+    //     return res.send('Welcome User')
+    // }
+
+    try {
+        const query = {
+            where: {
+                UserId: userId
+            }
+        }
+        await User.destroy(query)
+        res.status(200).json({ message: "Profile Removed" })
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
 })
-
-
 
 
     //     try {

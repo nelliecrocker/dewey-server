@@ -24,7 +24,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         location: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
+        },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
+            defaultValue: false
         }
     })
     return User
