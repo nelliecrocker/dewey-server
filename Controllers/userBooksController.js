@@ -22,7 +22,11 @@ router.post("/create", validateJWT, async (req, res) => {
         if (user) {
             const newBook = await UserBooks.create(bookEntry)
             await newBook.setUser(user)
-            res.status(200).json(newBook)
+            res.status(200).json({
+                book: newBook,
+                message: "Book successfully created!",
+            })
+
         } else throw "unable to find a user"
     } catch (err) {
         res.status(500).json({ error: err })
@@ -103,7 +107,7 @@ router.put("/update/:bookId", validateJWT, async (req, res) => {
         const update = await UserBooks.update(updatedBook, query)
 
         if (update) {
-            res.status(200).json(update) 
+            res.status(200).json(update)
         } else throw "unable to update this book"
     } catch (err) {
         res.status(500).json({ error: err })

@@ -17,7 +17,7 @@ UserProfile.belongsTo(User)
 User.hasMany(UserBooks)
 UserBooks.belongsTo(User)
 
-syncDb(sequelize, { alter: true })
+// syncDb(sequelize, { alter: true })
 
 
 module.exports = { User, UserBooks, UserProfile }
