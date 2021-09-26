@@ -82,6 +82,38 @@ router.post("/login", async (req, res) => {
     }
 })
 
+router.put("/update/:userId", validateJWT, async (req, res) => {
+
+    const { username, fname, lname, email, password, location, isAdmin } = req.body.user
+
+    const userId = req.user.id
+    try {
+        const query = {
+            where: {
+                UserId: userId
+            },
+            returning: true
+        }
+
+        const updatedUser = {
+            username: username,
+            fname: fname,
+            lname: lname,
+            email: email,
+            password: password,
+            location: location,
+            isAdmin: isAdmin
+        }
+
+        const update = await User.update(updatedUser, query)
+
+        if (update) {
+            res.status(200).json(update)
+        } else throw "unable to update this user"
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
+})
 
 // router.delete("/delete/:userId", validateJWT, async (req, res) => {
 //     const userId = req.user.id
