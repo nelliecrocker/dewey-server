@@ -7,7 +7,14 @@ const sequelize = new Sequelize(
     process.env.DB_PASS,
     {
         host: process.env.DB_HOST,
-        dialect: 'postgres'
+        dialect: 'postgres',
+        //comment out dialect options if work on local host
+        dialectOptions: {
+            ssl:{
+                    require: true,
+                    rejectUnauthorized: false
+                }
+    }
     });
 
 
