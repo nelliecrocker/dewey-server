@@ -2,8 +2,8 @@ const { Router } = require("express")
 const Express = require("express")
 const router = Express.Router()
 let validateJWT = require("../middleware/validate-jwt")
-const { UserBooks } = require("../models")
-const { User } = require("../models")
+const { UserBooks } = require("../Models")
+const { User } = require("../Models")
 
 
 router.post("/create", validateJWT, async (req, res) => {

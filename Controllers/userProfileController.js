@@ -3,8 +3,8 @@ const Express = require("express")
 const router = Express.Router()
 let validateJWT = require("../middleware/validate-jwt")
 // let { authUser, authRole } = require("../middleware/isAdmin")
-const { UserProfile } = require("../models")
-const { User } = require("../models")
+const { UserProfile } = require("../Models")
+const { User } = require("../Models")
 
 
 router.post("/create/:id", validateJWT, async (req, res) => {
