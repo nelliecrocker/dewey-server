@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const { sequelize } = require('./db');
 const app = express()
-const port = 3000
+// const port = 3000
 
     ;(async () => {
 
@@ -22,7 +22,11 @@ const port = 3000
         const profile = require('./Controllers/userProfileController')
         app.use('/profile', profile)
 
-        app.listen(port, () => {
-            console.log(`Dewey server listening at http://localhost:${port}`)
+        app.listen(process.env.PORT, () => {
+            console.log(`server is listening on port ${process.env.PORT}`)
         })
+
+        // app.listen(port, () => {
+        //     console.log(`Dewey server listening at http://localhost:${port}`)
+        // })
     })()
