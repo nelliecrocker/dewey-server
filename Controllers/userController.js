@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const router = require("express").Router()
-const { User } = require('../models')
+const { User } = require('../Models')
 const { UniqueConstraintError } = require("sequelize/lib/errors")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcryptjs')
