@@ -115,23 +115,8 @@ router.put("/update/:userId", validateJWT, async (req, res) => {
     }
 })
 
-// router.delete("/delete/:userId", validateJWT, async (req, res) => {
-//     const userId = req.user.id
-//     const user = await User.create({ id: userId })
-//     console.log(user.name);
-//     await user.destroy()
-// })
-
 router.delete("/delete/:userId", validateJWT, async (req, res) => {
     const userId = req.user.id
-
-//According to Amit, use this as a check to see if Admin is true or false; store as state
-    // if(req.user.isAdmin == "true") {
-    //     res.status(200)
-    //     return res.send('Welcome Admin')
-    // } else {
-    //     return res.send('Welcome User')
-    // }
 
     try {
         const query = {
@@ -145,20 +130,5 @@ router.delete("/delete/:userId", validateJWT, async (req, res) => {
         res.status(500).json({ error: err })
     }
 })
-
-
-    //     try {
-    //         const query = {
-    //             where: {
-    //                 id: userId
-    //             }
-    //         }
-    //         console.log("************");
-    //         await User.destroy(query)
-    //         res.status(200).json({ message: "User Removed" })
-    //     } catch (err) {
-    //         res.status(500).json({ error: err })
-    //     }
-    // })
 
     module.exports = router

@@ -7,7 +7,7 @@ const { UserProfile } = require("../models")
 const { User } = require("../models")
 
 
-router.post("/create", validateJWT, async (req, res) => {
+router.post("/create/:id", validateJWT, async (req, res) => {
     const { preferredGenre, favoriteCharacter, collectionSize } = req.body.UserProfile
     const { id } = req.user
     const profileEntry = {
