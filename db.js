@@ -6,7 +6,7 @@ const sequelize = new Sequelize(
     process.env.DB_USER,
     process.env.DB_PASS,
     {
-        host: process.env.DB_HOST,
+        // host: process.env.DB_HOST,
         dialect: 'postgres',
         //comment out dialect options if work on local host
         dialectOptions: {
