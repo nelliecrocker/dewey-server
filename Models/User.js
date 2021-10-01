@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         isAdmin: {
             type: DataTypes.BOOLEAN,
             allowNull: true,
-            defaultValue: true
+            defaultValue: false
         }
     })
     return User
